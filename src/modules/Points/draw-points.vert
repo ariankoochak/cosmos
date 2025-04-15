@@ -22,6 +22,9 @@ varying vec2 textureCoords;
 varying vec3 rgbColor;
 varying float alpha;
 
+attribute vec2 a_texCoord;
+varying vec2 v_texCoord;
+
 float calculatePointSize(float size) {
   float pSize;
   if (scalePointsOnZoom) { 
@@ -34,6 +37,8 @@ float calculatePointSize(float size) {
 }
 
 void main() {  
+  v_texCoord = a_texCoord;
+  
   textureCoords = pointIndices;
   // Position
   vec4 pointPosition = texture2D(positionsTexture, (textureCoords + 0.5) / pointsTextureSize);

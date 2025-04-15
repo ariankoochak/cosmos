@@ -1,7 +1,7 @@
 // Fragment shader for rendering points with a smooth circular edge
 
 #ifdef GL_ES
-precision highp float;
+//precision highp float;
 #endif
 
 // The color and alpha values from the vertex shader
@@ -10,6 +10,13 @@ varying float alpha;
 
 // Smoothing control the smoothness of the point’s edge
 const float smoothing = 0.9;
+
+
+precision mediump float;
+
+uniform sampler2D u_texture;
+varying vec2 v_texCoord;
+
 
 void main() {
     // Discard the fragment if the point is fully transparent
@@ -22,5 +29,6 @@ void main() {
     // Calculate opacity based on distance and smoothing
     float opacity = alpha * (1.0 - smoothstep(smoothing, 1.0, pointCenterDistance));
 
-    gl_FragColor = vec4(rgbColor, opacity);
+    //gl_FragColor = vec4(rgbColor, opacity);
+    gl_FragColor = texture2D(u_texture, v_texCoord);
 }

@@ -148,6 +148,11 @@ export class Points extends CoreModule {
 
   public initPrograms (): void {
     const { reglInstance, config, store, data } = this
+
+    const texCoordBuffer = reglInstance.buffer(
+        new Float32Array((data.pointsNumber ?? 0) * 2).fill(0.5)
+    );
+
     if (!config.disableSimulation) {
       if (!this.updatePositionCommand) {
         this.updatePositionCommand = reglInstance({
@@ -201,6 +206,10 @@ export class Points extends CoreModule {
             buffer: () => this.colorBuffer,
             size: 4,
           },
+          a_texCoord: {
+            buffer: texCoordBuffer,
+            size: 2,
+          }
         },
         uniforms: {
           positionsTexture: () => this.currentPositionFbo,
@@ -214,6 +223,7 @@ export class Points extends CoreModule {
           greyoutOpacity: () => config.pointGreyoutOpacity,
           scalePointsOnZoom: () => config.scalePointsOnZoom,
           maxPointSize: () => store.maxPointSize,
+          u_texture: () => this.texture
         },
         blend: {
           enable: true,
